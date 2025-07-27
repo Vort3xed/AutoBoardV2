@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoBoard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>AutoBoard</h1>
+            <div class="controls">
+                <button id="exportBtn" class="btn export-btn">Export Diagram</button>
+                <button id="clearBtn" class="btn clear-btn">Clear All</button>
+            </div>
+        </header>
+
+        <div class="viewport">
+            <video id="webcam" autoplay muted playsinline></video>
+
+            <canvas id="hands-canvas"></canvas>
+
+            <!-- canvas for flowchart elements -->
+            <canvas id="flowchart-canvas"></canvas>
+
+            <!-- status overlay -->
+            <div class="status-overlay">
+                <div id="gesture-status" class="status-item">
+                    <span class="status-label">Current Action:</span>
+                    <span id="current-gesture">👋 Wave hand to start</span>
+                </div>
+                <div id="voice-status" class="status-item hidden">
+                    <span class="status-label">🎤 Listening...</span>
+                    <div class="voice-indicator"></div>
+                </div>
+            </div>
+
+            <!-- gesture guide -->
+            <div class="gesture-guide" id="gesture-guide"
+                style="border: 1px solid #ccc; padding: 1rem; border-radius: 8px; max-width: 400px;">
+                <div class="gesture-guide-header"
+                    style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin: 0;">Gesture Controls</h3>
+                    <button id="toggle-guide" class="toggle-guide-btn"
+                        style="font-size: 1.2rem; background: none; border: none; cursor: pointer; color: #ccc">−</button>
+                </div>
+                <div class="gesture-list" id="gesture-list" style="margin-top: 1rem;">
+                    <div class="gesture-item">
+                        <div class="gesture-icon">✋</div>
+                        <div class="gesture-desc"><strong>Create Box:</strong> Open palm</div>
+                    </div>
+                    <div class="gesture-item">
+                        <div class="gesture-icon">👆</div>
+                        <div class="gesture-desc"><strong>Draw Arrow:</strong> Point 1 finger + aim direction</div>
+                    </div>
+                    <div class="gesture-item">
+                        <div class="gesture-icon">🤏</div>
+                        <div class="gesture-desc"><strong>Move/Drag:</strong> Pinch element or arrow ends</div>
+                    </div>
+                    <div class="gesture-item">
+                        <div class="gesture-icon">✌️</div>
+                        <div class="gesture-desc"><strong>Add Text:</strong> Peace sign over box + speak</div>
+                    </div>
+                    <div class="gesture-item">
+                        <div class="gesture-icon">🤟</div>
+                        <div class="gesture-desc"><strong>Free Draw:</strong> 3 fingers up + move to draw</div>
+                    </div>
+                    <div class="gesture-item">
+                        <div class="gesture-icon">✊</div>
+                        <div class="gesture-desc"><strong>Delete:</strong> Closed fist over element (hold 2s)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- credit blob -->
+            <div class="credit-blob" style="position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.7); color: white; padding: 8px 16px; font-size: 12px; border-radius: 12px 12px 0 0; z-index: 1000;">
+                made with 💖 by <a href="https://github.com/Vort3xed" target="_blank" style="color: #4fc3f7; text-decoration: none;">agneya</a> | <a href="https://coff.ee/agneya" target="_blank" style="color: #4fc3f7; text-decoration: none;">buy me a coffee :)</a> | <a href="https://github.com/Vort3xed/AutoBoardV2" target="_blank" style="color: #4fc3f7; text-decoration: none;">view on GitHub</a>
+            </div>
+
+            <script>
+                document.getElementById("toggle-guide").addEventListener("click", function () {
+                    const list = document.getElementById("gesture-list");
+                    const btn = document.getElementById("toggle-guide");
+
+                    if (list.style.display === "none") {
+                        list.style.display = "block";
+                        btn.textContent = "−";
+                    } else {
+                        list.style.display = "none";
+                        btn.textContent = "+";
+                    }
+                });
+            </script>
+        </div>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
