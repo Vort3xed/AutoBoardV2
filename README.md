@@ -9,7 +9,7 @@ made by [Agneya](https://github.com/Vort3xed)
 ### Quick Start
 
 1. **clone project files**
-2. **Serve the files via HTTPS** (required for webcam/microphone access):
+2. **Serve the files**:
 
    **option 1: use python:**
    ```bash
